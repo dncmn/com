@@ -15,6 +15,7 @@
 package com
 
 import (
+	"fmt"
 	"testing"
 
 	. "github.com/smartystreets/goconvey/convey"
@@ -53,4 +54,14 @@ func TestInt2HexStr(t *testing.T) {
 			So(val, ShouldEqual, hex)
 		}
 	})
+}
+
+func TestStrToUint64(t *testing.T) {
+	str := "124"
+	v, err := StrTo(str).Uint64()
+	if err != nil {
+		t.Error(err)
+		return
+	}
+	fmt.Println(v)
 }
