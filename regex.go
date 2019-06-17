@@ -22,19 +22,22 @@ const (
 		`(?:\.[A-Z0-9!#$%&'*+/=?^_{|}~-]+)*` +
 		`@(?:[A-Z0-9](?:[A-Z0-9-]*[A-Z0-9])?\.)+` +
 		`[A-Z0-9](?:[A-Z0-9-]*[A-Z0-9])?`
-	regex_url_pattern = `(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?`
+	regex_url_pattern     = `(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?`
+	regex_chinese_pattern = `[\p{Han}]+`
 )
 
 var (
-	regex_email        *regexp.Regexp
-	regex_strict_email *regexp.Regexp
-	regex_url          *regexp.Regexp
+	regex_email            *regexp.Regexp
+	regex_strict_email     *regexp.Regexp
+	regex_url              *regexp.Regexp
+	regex_contains_chinese *regexp.Regexp
 )
 
 func init() {
 	regex_email = regexp.MustCompile(regex_email_pattern)
 	regex_strict_email = regexp.MustCompile(regex_strict_email_pattern)
 	regex_url = regexp.MustCompile(regex_url_pattern)
+	regex_contains_chinese = regexp.MustCompile(regex_chinese_pattern)
 }
 
 // IsEmail validates string is an email address, if not return false
@@ -53,4 +56,9 @@ func IsEmailRFC(email string) bool {
 // simple validation can match 99% cases
 func IsUrl(url string) bool {
 	return regex_url.MatchString(url)
+}
+
+// IsContainChinese validates cnt containes Chinese.
+func IsContainChinese(cnt string) bool {
+	return regex_contains_chinese.MatchString(cnt)
 }

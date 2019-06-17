@@ -15,7 +15,11 @@
 package com
 
 import (
+	"crypto/md5"
+	"crypto/sha1"
 	"encoding/base64"
+	"encoding/hex"
+	"io"
 	"net/url"
 )
 
@@ -38,4 +42,19 @@ func Base64Encode(str string) string {
 func Base64Decode(str string) (string, error) {
 	s, e := base64.StdEncoding.DecodeString(str)
 	return string(s), e
+}
+
+// sha1 encode
+func EncodeSha1(pwd string) (result string) {
+	sha1 := sha1.New()
+	sha1.Write([]byte(pwd))
+	return hex.EncodeToString(sha1.Sum([]byte("")))
+}
+
+// md5 encode
+func EncodeMD5(pwd string) (result string) {
+	h := md5.New()
+	io.WriteString(h, pwd)
+	result = hex.EncodeToString(h.Sum(nil))
+	return
 }
